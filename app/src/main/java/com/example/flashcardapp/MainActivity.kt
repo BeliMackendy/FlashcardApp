@@ -14,5 +14,10 @@ class MainActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.flashcard_question).visibility = View.INVISIBLE
             findViewById<TextView>(R.id.flashcard_answer).visibility = View.VISIBLE
         })
+
+        findViewById<TextView>(R.id.flashcard_answer).setOnClickListener(View.OnClickListener {
+            findViewById<TextView>(R.id.flashcard_question).visibility = View.VISIBLE
+            findViewById<TextView>(R.id.flashcard_answer).visibility = View.INVISIBLE
+        })
     }
 }
