@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="20dp"
     tools:context=".MainActivity">
 
     <TextView
@@ -76,7 +77,16 @@
             android:text="Barack Obama"
             android:textColor="#FFFF"
             android:textSize="24sp" />
+
     </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/toggle_choices_visibility"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/eye_lined"/>
 
 
 </RelativeLayout>

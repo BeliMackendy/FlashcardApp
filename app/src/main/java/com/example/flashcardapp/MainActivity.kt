@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -20,6 +21,9 @@ class MainActivity : AppCompatActivity() {
         val txt_B = findViewById<TextView>(R.id.txt_B)
         val txt_C = findViewById<TextView>(R.id.txt_C)
         val rl_choice = findViewById<RelativeLayout>(R.id.rl_choice)
+        val toggle_choices_visibility = findViewById<ImageView>(R.id.toggle_choices_visibility)
+
+        var isShowingAnswers = true
 
         flashcard_question.setOnClickListener(View.OnClickListener {
             flashcard_question.visibility = View.INVISIBLE
@@ -78,6 +82,21 @@ class MainActivity : AppCompatActivity() {
             txt_A.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
             txt_B.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
             txt_C.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
+        })
+
+        toggle_choices_visibility.setOnClickListener(View.OnClickListener {
+            if(isShowingAnswers==true)
+            {
+                isShowingAnswers = false
+                toggle_choices_visibility.setImageResource(R.drawable.eye_off_lined)
+                rl_choice.visibility = View.INVISIBLE
+            }
+            else
+            {
+                isShowingAnswers = true
+                toggle_choices_visibility.setImageResource(R.drawable.eye_lined)
+                rl_choice.visibility = View.VISIBLE
+            }
         })
     }
 }
