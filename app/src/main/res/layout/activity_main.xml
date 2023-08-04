@@ -18,12 +18,15 @@
     <TextView
         android:id="@+id/flashcard_answer"
         android:layout_width="match_parent"
-        android:layout_below="@id/flashcard_question"
         android:layout_height="200dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
         android:gravity="center"
-        android:layout_margin="15dp"
+        android:text="Barack Obama"
         android:textSize="40sp"
-        android:text="Barack Obama" />
+        android:visibility="invisible" />
 
 
 </RelativeLayout>
