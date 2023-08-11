@@ -12,6 +12,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
@@ -46,6 +47,11 @@ class MainActivity : AppCompatActivity() {
 
                 flashcard_question.text = question
                 flashcard_answer.text = answer
+
+                Snackbar.make(findViewById(R.id.flashcard_question),
+                    "Card successfylly created",
+                    Snackbar.LENGTH_SHORT)
+                    .show()
             }
             else{
                 Log.i("TAG", "Returned null data from AddCardActivity ")
