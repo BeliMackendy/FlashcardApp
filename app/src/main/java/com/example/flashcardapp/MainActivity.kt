@@ -4,12 +4,14 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 
 class MainActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
@@ -31,9 +33,27 @@ class MainActivity : AppCompatActivity() {
             flashcard_answer.visibility = View.INVISIBLE
         })
 
+        val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result->
+            val data: Intent? = result.data
+
+            if(data!=null){
+                val question = data.getStringExtra("question")
+                val answer = data.getStringExtra("answer")
+
+                Log.i("TAG", "Question:$question ")
+                Log.i("TAG", "Answer:$answer ")
+
+                flashcard_question.text = question
+                flashcard_answer.text = answer
+            }
+            else{
+                Log.i("TAG", "Returned null data from AddCardActivity ")
+            }
+        }
+
         btAdd.setOnClickListener(View.OnClickListener {
             val intent = Intent(this,AddCardActivity::class.java)
-            startActivity(intent)
+            resultLauncher.launch(intent)
         })
     }
 }
