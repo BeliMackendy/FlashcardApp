@@ -5,6 +5,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AddCardActivity">
+
+    <EditText
+        android:id="@+id/etquestion"
+        android:layout_width="350dp"
+        android:layout_height="70dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:ems="10"
+        android:hint="Enter the Question here"
+        android:inputType="text|textMultiLine" />
+
+    <EditText
+        android:id="@+id/etanswer"
+        android:layout_width="350dp"
+        android:layout_height="70dp"
+        android:layout_below="@id/etquestion"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:ems="10"
+        android:hint="Enter The Answer here"
+        android:inputType="text|textMultiLine" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
