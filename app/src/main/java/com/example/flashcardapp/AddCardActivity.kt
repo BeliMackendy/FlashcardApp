@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 
 class AddCardActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,16 +34,24 @@ class AddCardActivity : AppCompatActivity() {
         })
 
         btSave.setOnClickListener(View.OnClickListener {
+
             val question = findViewById<EditText>(R.id.etquestion)
             val answer = findViewById<EditText>(R.id.etanswer)
-            val data = Intent()
+            if(!question.text.isNullOrEmpty() && !answer.text.isNullOrEmpty()){
+                val data = Intent()
 
-            data.putExtra("question",question.text.toString())
-            data.putExtra("answer",answer.text.toString())
+                data.putExtra("question",question.text.toString())
+                data.putExtra("answer",answer.text.toString())
 
-            setResult(RESULT_OK,data)
+                setResult(RESULT_OK,data)
 
-            finish()
+                finish()
+            }
+            else
+            {
+                Toast.makeText(this,"Must enter both Question and Answer",Toast.LENGTH_LONG).show()
+            }
+
         })
     }
 }
