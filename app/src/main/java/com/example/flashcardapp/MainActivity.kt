@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
         val flashcard_question = findViewById<TextView>(R.id.flashcard_question)
         val flashcard_answer = findViewById<TextView>(R.id.flashcard_answer)
         val btAdd = findViewById<ImageView>(R.id.bt_add)
+        val btEdit = findViewById<ImageView>(R.id.bt_edit)
 
         flashcard_question.setOnClickListener(View.OnClickListener {
             flashcard_question.visibility = View.INVISIBLE
@@ -53,6 +54,13 @@ class MainActivity : AppCompatActivity() {
 
         btAdd.setOnClickListener(View.OnClickListener {
             val intent = Intent(this,AddCardActivity::class.java)
+            resultLauncher.launch(intent)
+        })
+
+        btEdit.setOnClickListener(View.OnClickListener {
+            val intent = Intent(this,AddCardActivity::class.java)
+            intent.putExtra("question",flashcard_question.text)
+            intent.putExtra("answer",flashcard_answer.text)
             resultLauncher.launch(intent)
         })
     }

@@ -6,11 +6,24 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 
 class AddCardActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_card)
+
+
+
+        val question = intent.getStringExtra("question");
+        val answer = intent.getStringExtra("answer");
+
+        val etquestion = findViewById<TextView>(R.id.etquestion)
+        etquestion.text = question
+
+        val etanswer = findViewById<TextView>(R.id.etanswer)
+        etanswer.text = answer
+
 
         val btCancel = findViewById<ImageView>(R.id.bt_cancel)
         val btSave = findViewById<ImageView>(R.id.bt_save)
