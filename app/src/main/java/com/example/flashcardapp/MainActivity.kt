@@ -23,6 +23,8 @@ class MainActivity : AppCompatActivity() {
         val flashcard_question = findViewById<TextView>(R.id.flashcard_question)
         val flashcard_answer = findViewById<TextView>(R.id.flashcard_answer)
 
+        val rl_choice = findViewById<RelativeLayout>(R.id.rl_choice)
+
         val txt_A = findViewById<TextView>(R.id.txt_A)
         val txt_B = findViewById<TextView>(R.id.txt_B)
         val txt_C = findViewById<TextView>(R.id.txt_C)
@@ -80,6 +82,12 @@ class MainActivity : AppCompatActivity() {
                 txt_B.setBackground(getResources().getDrawable(R.drawable.card_background_answer, null))
                 txt_C.setBackground(getResources().getDrawable(R.drawable.card_background_error, null))
             }
+        })
+
+        rl_choice.setOnClickListener(View.OnClickListener {
+            txt_A.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
+            txt_B.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
+            txt_C.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
         })
 
         val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result->
