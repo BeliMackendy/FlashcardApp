@@ -25,6 +25,9 @@ class AddCardActivity : AppCompatActivity() {
         val etanswer = findViewById<TextView>(R.id.etanswer)
         etanswer.text = answer
 
+        val etoption1 = findViewById<TextView>(R.id.etoption1)
+        val etoption2 = findViewById<TextView>(R.id.etoption2)
+
 
         val btCancel = findViewById<ImageView>(R.id.bt_cancel)
         val btSave = findViewById<ImageView>(R.id.bt_save)
@@ -35,13 +38,13 @@ class AddCardActivity : AppCompatActivity() {
 
         btSave.setOnClickListener(View.OnClickListener {
 
-            val question = findViewById<EditText>(R.id.etquestion)
-            val answer = findViewById<EditText>(R.id.etanswer)
-            if(!question.text.isNullOrEmpty() && !answer.text.isNullOrEmpty()){
+            if(!etquestion.text.isNullOrEmpty() && !etanswer.text.isNullOrEmpty() && !etoption1.text.isNullOrEmpty() && !etoption2.text.isNullOrEmpty()){
                 val data = Intent()
 
-                data.putExtra("question",question.text.toString())
-                data.putExtra("answer",answer.text.toString())
+                data.putExtra("question",etquestion.text.toString())
+                data.putExtra("answer",etanswer.text.toString())
+                data.putExtra("option1",etoption1.text.toString())
+                data.putExtra("option2",etoption2.text.toString())
 
                 setResult(RESULT_OK,data)
 
