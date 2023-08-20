@@ -14,10 +14,13 @@ class AddCardActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_card)
 
-
-
         val question = intent.getStringExtra("question");
         val answer = intent.getStringExtra("answer");
+        //        val etoption1 = findViewById<TextView>(R.id.etoption1)
+//        val etoption2 = findViewById<TextView>(R.id.etoption2)
+
+        val btCancel = findViewById<ImageView>(R.id.bt_cancel)
+        val btSave = findViewById<ImageView>(R.id.bt_save)
 
         val etquestion = findViewById<TextView>(R.id.etquestion)
         etquestion.text = question
@@ -25,34 +28,27 @@ class AddCardActivity : AppCompatActivity() {
         val etanswer = findViewById<TextView>(R.id.etanswer)
         etanswer.text = answer
 
-        val etoption1 = findViewById<TextView>(R.id.etoption1)
-        val etoption2 = findViewById<TextView>(R.id.etoption2)
-
-
-        val btCancel = findViewById<ImageView>(R.id.bt_cancel)
-        val btSave = findViewById<ImageView>(R.id.bt_save)
-
         btCancel.setOnClickListener(View.OnClickListener {
             finish()
         })
 
         btSave.setOnClickListener(View.OnClickListener {
 
-            if(!etquestion.text.isNullOrEmpty() && !etanswer.text.isNullOrEmpty() && !etoption1.text.isNullOrEmpty() && !etoption2.text.isNullOrEmpty()){
+            if (!etquestion.text.isNullOrEmpty() && !etanswer.text.isNullOrEmpty()) {
+//                && !etoption1.text.isNullOrEmpty() && !etoption2.text.isNullOrEmpty()){
                 val data = Intent()
 
-                data.putExtra("question",etquestion.text.toString())
-                data.putExtra("answer",etanswer.text.toString())
-                data.putExtra("option1",etoption1.text.toString())
-                data.putExtra("option2",etoption2.text.toString())
+                data.putExtra("question", etquestion.text.toString())
+                data.putExtra("answer", etanswer.text.toString())
+//                data.putExtra("option1",etoption1.text.toString())
+//                data.putExtra("option2",etoption2.text.toString())
 
-                setResult(RESULT_OK,data)
+                setResult(RESULT_OK, data)
 
                 finish()
-            }
-            else
-            {
-                Toast.makeText(this,"Must enter both Question and Answer",Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(this, "Must enter both Question and Answer", Toast.LENGTH_LONG)
+                    .show()
             }
 
         })
