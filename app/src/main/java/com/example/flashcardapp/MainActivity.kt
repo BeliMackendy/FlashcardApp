@@ -27,6 +27,8 @@ class MainActivity : AppCompatActivity() {
 
         val flashcard_question = findViewById<TextView>(R.id.flashcard_question)
         val flashcard_answer = findViewById<TextView>(R.id.flashcard_answer)
+        val rl_question_answer = findViewById<RelativeLayout>(R.id.rl_question_answer)
+        val iv_empty_card = findViewById<ImageView>(R.id.iv_empty_card)
 //
 //        val rl_choice = findViewById<RelativeLayout>(R.id.rl_choice)
 //
@@ -43,8 +45,10 @@ class MainActivity : AppCompatActivity() {
         if (allFlashcards.size > 0) {
             flashcard_question.text = allFlashcards[0].question
             flashcard_answer.text = allFlashcards[0].answer
-        }
 
+            iv_empty_card.visibility = View.INVISIBLE
+            rl_question_answer.visibility = View.VISIBLE
+        }
 
         findViewById<View>(R.id.btn_next).setOnClickListener {
             // don't try to go to next card if you have no cards to begin with
@@ -73,6 +77,39 @@ class MainActivity : AppCompatActivity() {
 
             flashcard_answer.text = answer
             flashcard_question.text = question
+
+            flashcard_question.visibility = View.VISIBLE
+            flashcard_answer.visibility = View.INVISIBLE
+        }
+
+        findViewById<View>(R.id.btn_delete).setOnClickListener {
+            // don't try to go to next card if you have no cards to begin with
+            if (allFlashcards.size == 0) {
+                // return here, so that the rest of the code in this onClickListener doesn't execute
+                return@setOnClickListener
+            }
+
+
+            val flashcardQuestionToDelete = flashcard_question.text.toString()
+            flashcardDatabase.deleteCard(flashcardQuestionToDelete)
+            allFlashcards = flashcardDatabase.getAllCards().toMutableList()
+            currentCardDisplayedIndex--
+
+            if (allFlashcards.size == 0) {
+                iv_empty_card.visibility = View.VISIBLE
+                rl_question_answer.visibility = View.INVISIBLE
+            } else {
+                if (currentCardDisplayedIndex == -1)
+                    currentCardDisplayedIndex = 0
+
+                val (question, answer) = allFlashcards[currentCardDisplayedIndex]
+                flashcard_answer.text = answer
+                flashcard_question.text = question
+
+                flashcard_question.visibility = View.VISIBLE
+                flashcard_answer.visibility = View.INVISIBLE
+            }
+
         }
 
         flashcard_question.setOnClickListener(View.OnClickListener {
@@ -148,8 +185,6 @@ class MainActivity : AppCompatActivity() {
 
 
                     if (question != null && answer != null) {
-                        flashcard_question.text = question
-                        flashcard_answer.text = answer
 
                         flashcardDatabase.insertCard(
                             Flashcard(
@@ -158,6 +193,13 @@ class MainActivity : AppCompatActivity() {
                             )
                         )
                         allFlashcards = flashcardDatabase.getAllCards().toMutableList()
+
+                        if (allFlashcards.size > 0) {
+                            flashcard_question.text = question
+                            flashcard_answer.text = answer
+                            iv_empty_card.visibility = View.INVISIBLE
+                            rl_question_answer.visibility = View.VISIBLE
+                        }
 
 //                txt_A.text = option1
 //                txt_B.text = answer
@@ -169,6 +211,8 @@ class MainActivity : AppCompatActivity() {
                             Snackbar.LENGTH_SHORT
                         )
                             .show()
+
+
                     } else {
                         Log.e(
                             "TAG",
