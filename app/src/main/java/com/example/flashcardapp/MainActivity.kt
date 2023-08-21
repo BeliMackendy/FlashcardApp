@@ -17,6 +17,7 @@ import com.google.android.material.snackbar.Snackbar
 class MainActivity : AppCompatActivity() {
 
     lateinit var flashcardDatabase: FlashcardDatabase
+    var currentCardDisplayedIndex = 0
     var allFlashcards = mutableListOf<Flashcard>()
 
     @SuppressLint("MissingInflatedId")
@@ -42,6 +43,36 @@ class MainActivity : AppCompatActivity() {
         if (allFlashcards.size > 0) {
             flashcard_question.text = allFlashcards[0].question
             flashcard_answer.text = allFlashcards[0].answer
+        }
+
+
+        findViewById<View>(R.id.btn_next).setOnClickListener {
+            // don't try to go to next card if you have no cards to begin with
+            if (allFlashcards.size == 0) {
+                // return here, so that the rest of the code in this onClickListener doesn't execute
+                return@setOnClickListener
+            }
+
+            // advance our pointer index so we can show the next card
+            currentCardDisplayedIndex++
+
+            // make sure we don't get an IndexOutOfBoundsError if we are viewing the last indexed card in our list
+            if (currentCardDisplayedIndex >= allFlashcards.size) {
+                Snackbar.make(
+                    flashcard_question, // This should be the TextView for displaying your flashcard question
+                    "You've reached the end of the cards, going back to start.",
+                    Snackbar.LENGTH_LONG
+                )
+                    .show()
+                currentCardDisplayedIndex = 0
+            }
+
+            // set the question and answer TextViews with data from the database
+            allFlashcards = flashcardDatabase.getAllCards().toMutableList()
+            val (question, answer) = allFlashcards[currentCardDisplayedIndex]
+
+            flashcard_answer.text = answer
+            flashcard_question.text = question
         }
 
         flashcard_question.setOnClickListener(View.OnClickListener {
