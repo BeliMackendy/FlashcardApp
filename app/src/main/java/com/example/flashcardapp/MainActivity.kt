@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var flashcardDatabase: FlashcardDatabase
     var currentCardDisplayedIndex = 0
+    var index = 0
     var allFlashcards = mutableListOf<Flashcard>()
 
     @SuppressLint("MissingInflatedId")
@@ -43,8 +44,16 @@ class MainActivity : AppCompatActivity() {
         allFlashcards = flashcardDatabase.getAllCards().toMutableList()
 
         if (allFlashcards.size > 0) {
-            flashcard_question.text = allFlashcards[0].question
-            flashcard_answer.text = allFlashcards[0].answer
+            index = getRandomNumber(0,allFlashcards.size)
+
+            while (index==currentCardDisplayedIndex){
+                index = getRandomNumber(0,allFlashcards.size)
+            }
+
+            currentCardDisplayedIndex = index
+
+            flashcard_question.text = allFlashcards[currentCardDisplayedIndex].question
+            flashcard_answer.text = allFlashcards[currentCardDisplayedIndex].answer
 
             iv_empty_card.visibility = View.INVISIBLE
             rl_question_answer.visibility = View.VISIBLE
@@ -57,8 +66,14 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            index = getRandomNumber(0,allFlashcards.size)
+
+            while (index==currentCardDisplayedIndex){
+                index = getRandomNumber(0,allFlashcards.size)
+            }
+
             // advance our pointer index so we can show the next card
-            currentCardDisplayedIndex++
+            currentCardDisplayedIndex = index
 
             // make sure we don't get an IndexOutOfBoundsError if we are viewing the last indexed card in our list
             if (currentCardDisplayedIndex >= allFlashcards.size) {
@@ -235,5 +250,9 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("answer", flashcard_answer.text)
             resultLauncher.launch(intent)
         })
+    }
+
+    fun getRandomNumber(minNumber: Int, maxNumber: Int): Int {
+        return (minNumber..maxNumber).random() // generated random from 0 to 10 included
     }
 }
