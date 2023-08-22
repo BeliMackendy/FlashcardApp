@@ -27,38 +27,40 @@
         android:layout_below="@id/etquestion"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:ems="10"
         android:hint="Enter The Answer here"
         android:inputType="text|textMultiLine" />
-<!--    <EditText-->
-<!--        android:id="@+id/etoption1"-->
-<!--        android:layout_width="350dp"-->
-<!--        android:layout_height="70dp"-->
-<!--        android:layout_below="@id/etanswer"-->
-<!--        android:layout_centerHorizontal="true"-->
-<!--        android:layout_marginStart="20dp"-->
-<!--        android:layout_marginTop="20dp"-->
-<!--        android:layout_marginEnd="20dp"-->
-<!--        android:layout_marginBottom="20dp"-->
-<!--        android:ems="10"-->
-<!--        android:hint="Enter Wrong Answer Option Here"-->
-<!--        android:inputType="text|textMultiLine" />-->
-<!--    <EditText-->
-<!--        android:id="@+id/etoption2"-->
-<!--        android:layout_width="350dp"-->
-<!--        android:layout_height="70dp"-->
-<!--        android:layout_below="@id/etoption1"-->
-<!--        android:layout_centerHorizontal="true"-->
-<!--        android:layout_marginStart="20dp"-->
-<!--        android:layout_marginTop="20dp"-->
-<!--        android:layout_marginEnd="20dp"-->
-<!--        android:layout_marginBottom="20dp"-->
-<!--        android:ems="10"-->
-<!--        android:hint="Enter Another Wrong Answer Option Here"-->
-<!--        android:inputType="text|textMultiLine" />-->
+
+    <EditText
+        android:id="@+id/etoption1"
+        android:layout_width="350dp"
+        android:layout_height="70dp"
+        android:layout_below="@id/etanswer"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:ems="10"
+        android:hint="Enter Wrong Answer Option Here"
+        android:inputType="text|textMultiLine" />
+
+    <EditText
+        android:id="@+id/etoption2"
+        android:layout_width="350dp"
+        android:layout_height="70dp"
+        android:layout_below="@id/etoption1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:ems="10"
+        android:hint="Enter Another Wrong Answer Option Here"
+        android:inputType="text|textMultiLine" />
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -32,12 +32,12 @@ class MainActivity : AppCompatActivity() {
         val flashcard_answer = findViewById<TextView>(R.id.flashcard_answer)
         val rl_question_answer = findViewById<RelativeLayout>(R.id.rl_question_answer)
         val iv_empty_card = findViewById<ImageView>(R.id.iv_empty_card)
-//
-//        val rl_choice = findViewById<RelativeLayout>(R.id.rl_choice)
-//
-//        val txt_A = findViewById<TextView>(R.id.txt_A)
-//        val txt_B = findViewById<TextView>(R.id.txt_B)
-//        val txt_C = findViewById<TextView>(R.id.txt_C)
+
+        val rl_choice = findViewById<RelativeLayout>(R.id.rl_choice)
+
+        val txt_A = findViewById<TextView>(R.id.txt_A)
+        val txt_B = findViewById<TextView>(R.id.txt_B)
+        val txt_C = findViewById<TextView>(R.id.txt_C)
 
         val btAdd = findViewById<ImageView>(R.id.bt_add)
         val btEdit = findViewById<ImageView>(R.id.bt_edit)
@@ -56,9 +56,14 @@ class MainActivity : AppCompatActivity() {
 
             flashcard_question.text = allFlashcards[currentCardDisplayedIndex].question
             flashcard_answer.text = allFlashcards[currentCardDisplayedIndex].answer
+            txt_A.text = allFlashcards[currentCardDisplayedIndex].wrongAnswer1
+            txt_B.text = allFlashcards[currentCardDisplayedIndex].answer
+            txt_C.text = allFlashcards[currentCardDisplayedIndex].wrongAnswer2
+
 
             iv_empty_card.visibility = View.INVISIBLE
             rl_question_answer.visibility = View.VISIBLE
+            rl_choice.visibility = View.VISIBLE
         }
 
         findViewById<View>(R.id.btn_next).setOnClickListener {
@@ -90,13 +95,21 @@ class MainActivity : AppCompatActivity() {
 
             // set the question and answer TextViews with data from the database
             allFlashcards = flashcardDatabase.getAllCards().toMutableList()
-            val (question, answer) = allFlashcards[currentCardDisplayedIndex]
+            val (question, answer,wrong_answer_1,wrong_answer_2) = allFlashcards[currentCardDisplayedIndex]
 
             flashcard_answer.text = answer
             flashcard_question.text = question
+            txt_A.text = wrong_answer_1
+            txt_B.text = answer
+            txt_C.text = wrong_answer_2
+
 
             flashcard_question.visibility = View.VISIBLE
             flashcard_answer.visibility = View.INVISIBLE
+
+            txt_A.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
+            txt_B.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
+            txt_C.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
         }
 
         findViewById<View>(R.id.btn_delete).setOnClickListener {
@@ -115,16 +128,28 @@ class MainActivity : AppCompatActivity() {
             if (allFlashcards.size == 0) {
                 iv_empty_card.visibility = View.VISIBLE
                 rl_question_answer.visibility = View.INVISIBLE
+                flashcard_question.visibility = View.VISIBLE
+                flashcard_answer.visibility = View.INVISIBLE
+                rl_choice.visibility = View.INVISIBLE
             } else {
                 if (currentCardDisplayedIndex == -1)
                     currentCardDisplayedIndex = 0
 
-                val (question, answer) = allFlashcards[currentCardDisplayedIndex]
+                val (question, answer,wrong_answer_1,wrong_answer_2) = allFlashcards[currentCardDisplayedIndex]
                 flashcard_answer.text = answer
                 flashcard_question.text = question
+                txt_A.text = wrong_answer_1
+                txt_B.text = answer
+                txt_C.text = wrong_answer_2
 
+                rl_question_answer.visibility = View.VISIBLE
                 flashcard_question.visibility = View.VISIBLE
                 flashcard_answer.visibility = View.INVISIBLE
+                rl_choice.visibility = View.VISIBLE
+
+                txt_A.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
+                txt_B.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
+                txt_C.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
             }
 
         }
@@ -139,53 +164,137 @@ class MainActivity : AppCompatActivity() {
             flashcard_answer.visibility = View.INVISIBLE
         })
 
-//        txt_A.setOnClickListener(View.OnClickListener {
-//            if(txt_A.text==flashcard_answer.text)
-//            {
-//                txt_A.setBackground(getResources().getDrawable(R.drawable.card_background_answer, null))
-//                txt_B.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
-//                txt_C.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
-//            }
-//            else{
-//                txt_A.setBackground(getResources().getDrawable(R.drawable.card_background_error, null))
-//                txt_B.setBackground(getResources().getDrawable(R.drawable.card_background_answer, null))
-//                txt_C.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
-//            }
-//        })
-//
-//        txt_B.setOnClickListener(View.OnClickListener {
-//            if(txt_B.text==flashcard_answer.text)
-//            {
-//                txt_A.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
-//                txt_B.setBackground(getResources().getDrawable(R.drawable.card_background_answer, null))
-//                txt_C.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
-//            }
-//            else{
-//                txt_A.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
-//                txt_B.setBackground(getResources().getDrawable(R.drawable.card_background_error, null))
-//                txt_C.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
-//            }
-//        })
-//
-//        txt_C.setOnClickListener(View.OnClickListener {
-//            if(txt_C.text==flashcard_answer.text)
-//            {
-//                txt_A.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
-//                txt_B.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
-//                txt_C.setBackground(getResources().getDrawable(R.drawable.card_background_answer, null))
-//            }
-//            else{
-//                txt_A.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
-//                txt_B.setBackground(getResources().getDrawable(R.drawable.card_background_answer, null))
-//                txt_C.setBackground(getResources().getDrawable(R.drawable.card_background_error, null))
-//            }
-//        })
-//
-//        rl_choice.setOnClickListener(View.OnClickListener {
-//            txt_A.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
-//            txt_B.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
-//            txt_C.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
-//        })
+        txt_A.setOnClickListener(View.OnClickListener {
+            if (txt_A.text == flashcard_answer.text) {
+                txt_A.setBackground(
+                    getResources().getDrawable(
+                        R.drawable.card_background_answer,
+                        null
+                    )
+                )
+                txt_B.setBackground(
+                    getResources().getDrawable(
+                        R.drawable.card_background_choice,
+                        null
+                    )
+                )
+                txt_C.setBackground(
+                    getResources().getDrawable(
+                        R.drawable.card_background_choice,
+                        null
+                    )
+                )
+            } else {
+                txt_A.setBackground(
+                    getResources().getDrawable(
+                        R.drawable.card_background_error,
+                        null
+                    )
+                )
+                txt_B.setBackground(
+                    getResources().getDrawable(
+                        R.drawable.card_background_answer,
+                        null
+                    )
+                )
+                txt_C.setBackground(
+                    getResources().getDrawable(
+                        R.drawable.card_background_choice,
+                        null
+                    )
+                )
+            }
+        })
+
+        txt_B.setOnClickListener(View.OnClickListener {
+            if (txt_B.text == flashcard_answer.text) {
+                txt_A.setBackground(
+                    getResources().getDrawable(
+                        R.drawable.card_background_choice,
+                        null
+                    )
+                )
+                txt_B.setBackground(
+                    getResources().getDrawable(
+                        R.drawable.card_background_answer,
+                        null
+                    )
+                )
+                txt_C.setBackground(
+                    getResources().getDrawable(
+                        R.drawable.card_background_choice,
+                        null
+                    )
+                )
+            } else {
+                txt_A.setBackground(
+                    getResources().getDrawable(
+                        R.drawable.card_background_choice,
+                        null
+                    )
+                )
+                txt_B.setBackground(
+                    getResources().getDrawable(
+                        R.drawable.card_background_error,
+                        null
+                    )
+                )
+                txt_C.setBackground(
+                    getResources().getDrawable(
+                        R.drawable.card_background_choice,
+                        null
+                    )
+                )
+            }
+        })
+
+        txt_C.setOnClickListener(View.OnClickListener {
+            if (txt_C.text == flashcard_answer.text) {
+                txt_A.setBackground(
+                    getResources().getDrawable(
+                        R.drawable.card_background_choice,
+                        null
+                    )
+                )
+                txt_B.setBackground(
+                    getResources().getDrawable(
+                        R.drawable.card_background_choice,
+                        null
+                    )
+                )
+                txt_C.setBackground(
+                    getResources().getDrawable(
+                        R.drawable.card_background_answer,
+                        null
+                    )
+                )
+            } else {
+                txt_A.setBackground(
+                    getResources().getDrawable(
+                        R.drawable.card_background_choice,
+                        null
+                    )
+                )
+                txt_B.setBackground(
+                    getResources().getDrawable(
+                        R.drawable.card_background_answer,
+                        null
+                    )
+                )
+                txt_C.setBackground(
+                    getResources().getDrawable(
+                        R.drawable.card_background_error,
+                        null
+                    )
+                )
+            }
+        })
+
+        rl_choice.setOnClickListener(View.OnClickListener {
+            txt_A.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
+            txt_B.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
+            txt_C.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
+        })
 
         val resultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -194,15 +303,17 @@ class MainActivity : AppCompatActivity() {
                 if (data != null) {
                     val question = data.getStringExtra("question")
                     val answer = data.getStringExtra("answer")
-//                val option1 = data.getStringExtra("option1")
-//                val option2 = data.getStringExtra("option2")
+                    val option1 = data.getStringExtra("option1")
+                    val option2 = data.getStringExtra("option2")
 
                     if (question != null && answer != null) {
 
                         flashcardDatabase.insertCard(
                             Flashcard(
                                 question.toString(),
-                                answer.toString()
+                                answer.toString(),
+                                option1.toString(),
+                                option2.toString()
                             )
                         )
                         allFlashcards = flashcardDatabase.getAllCards().toMutableList()
@@ -210,13 +321,18 @@ class MainActivity : AppCompatActivity() {
                         if (allFlashcards.size > 0) {
                             flashcard_question.text = question
                             flashcard_answer.text = answer
+                            txt_A.text = option1
+                            txt_B.text = answer
+                            txt_C.text = option2
+
                             iv_empty_card.visibility = View.INVISIBLE
                             rl_question_answer.visibility = View.VISIBLE
-                        }
+                            rl_choice.visibility = View.VISIBLE
 
-//                txt_A.text = option1
-//                txt_B.text = answer
-//                txt_C.text = option2
+                            txt_A.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
+                            txt_B.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
+                            txt_C.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
+                        }
 
                         Snackbar.make(
                             findViewById(R.id.flashcard_question),
@@ -242,27 +358,24 @@ class MainActivity : AppCompatActivity() {
                 if (data != null) {
                     val question = data.getStringExtra("question")
                     val answer = data.getStringExtra("answer")
-//                val option1 = data.getStringExtra("option1")
-//                val option2 = data.getStringExtra("option2")
-
-//                    Log.i("TAG", "Question:$question ")
-//                    Log.i("TAG", "Answer:$answer ")
-
+                    val option1 = data.getStringExtra("option1")
+                    val option2 = data.getStringExtra("option2")
 
                     if (question != null && answer != null) {
 
-                        cardToEdit = Flashcard(question,answer,null,null,id)
+                        cardToEdit = Flashcard(question, answer, option1, option2, id)
 
                         flashcardDatabase.updateCard(cardToEdit!!)
 
                         flashcard_question.text = question
                         flashcard_answer.text = answer
+                        txt_A.text = option1
+                        txt_B.text = answer
+                        txt_C.text = option2
 
-
-
-//                txt_A.text = option1
-//                txt_B.text = answer
-//                txt_C.text = option2
+                        txt_A.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
+                        txt_B.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
+                        txt_C.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
 
                         Snackbar.make(
                             findViewById(R.id.flashcard_question),
@@ -289,7 +402,7 @@ class MainActivity : AppCompatActivity() {
         btEdit.setOnClickListener(View.OnClickListener {
 
             allFlashcards = flashcardDatabase.getAllCards().toMutableList()
-//            val (question, answer,wrong_answer_1,wrong_answer_2,uuid) = allFlashcards[currentCardDisplayedIndex]
+
             cardToEdit = allFlashcards[currentCardDisplayedIndex]
 
             id = cardToEdit?.uuid!!
@@ -298,6 +411,8 @@ class MainActivity : AppCompatActivity() {
 
             intent.putExtra("question", cardToEdit?.question)
             intent.putExtra("answer", cardToEdit?.answer)
+            intent.putExtra("option1", cardToEdit?.wrongAnswer1)
+            intent.putExtra("option2", cardToEdit?.wrongAnswer2)
 
             editResultLauncher.launch(intent)
         })
