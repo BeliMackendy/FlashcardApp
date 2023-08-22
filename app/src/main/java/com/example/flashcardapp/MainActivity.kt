@@ -19,6 +19,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var flashcardDatabase: FlashcardDatabase
     var currentCardDisplayedIndex = 0
     var index = 0
+    var id = 0
+    var cardToEdit: Flashcard? = null
     var allFlashcards = mutableListOf<Flashcard>()
 
     @SuppressLint("MissingInflatedId")
@@ -44,10 +46,10 @@ class MainActivity : AppCompatActivity() {
         allFlashcards = flashcardDatabase.getAllCards().toMutableList()
 
         if (allFlashcards.size > 0) {
-            index = getRandomNumber(0,allFlashcards.size)
+            index = getRandomNumber(0, allFlashcards.size)
 
-            while (index==currentCardDisplayedIndex){
-                index = getRandomNumber(0,allFlashcards.size)
+            while (index == currentCardDisplayedIndex) {
+                index = getRandomNumber(0, allFlashcards.size)
             }
 
             currentCardDisplayedIndex = index
@@ -66,10 +68,10 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            index = getRandomNumber(0,allFlashcards.size)
+            index = getRandomNumber(0, allFlashcards.size)
 
-            while (index==currentCardDisplayedIndex){
-                index = getRandomNumber(0,allFlashcards.size)
+            while (index == currentCardDisplayedIndex) {
+                index = getRandomNumber(0, allFlashcards.size)
             }
 
             // advance our pointer index so we can show the next card
@@ -195,10 +197,6 @@ class MainActivity : AppCompatActivity() {
 //                val option1 = data.getStringExtra("option1")
 //                val option2 = data.getStringExtra("option2")
 
-                    Log.i("TAG", "Question:$question ")
-                    Log.i("TAG", "Answer:$answer ")
-
-
                     if (question != null && answer != null) {
 
                         flashcardDatabase.insertCard(
@@ -226,8 +224,52 @@ class MainActivity : AppCompatActivity() {
                             Snackbar.LENGTH_SHORT
                         )
                             .show()
+                    } else {
+                        Log.e(
+                            "TAG",
+                            "Missing question or answer to input into database. Question is $question and answer is $answer"
+                        )
+                    }
+                } else {
+                    Log.i("TAG", "Returned null data from AddCardActivity ")
+                }
+            }
+
+        val editResultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                val data: Intent? = result.data
+
+                if (data != null) {
+                    val question = data.getStringExtra("question")
+                    val answer = data.getStringExtra("answer")
+//                val option1 = data.getStringExtra("option1")
+//                val option2 = data.getStringExtra("option2")
+
+//                    Log.i("TAG", "Question:$question ")
+//                    Log.i("TAG", "Answer:$answer ")
 
 
+                    if (question != null && answer != null) {
+
+                        cardToEdit = Flashcard(question,answer,null,null,id)
+
+                        flashcardDatabase.updateCard(cardToEdit!!)
+
+                        flashcard_question.text = question
+                        flashcard_answer.text = answer
+
+
+
+//                txt_A.text = option1
+//                txt_B.text = answer
+//                txt_C.text = option2
+
+                        Snackbar.make(
+                            findViewById(R.id.flashcard_question),
+                            "Card successfylly created",
+                            Snackbar.LENGTH_SHORT
+                        )
+                            .show()
                     } else {
                         Log.e(
                             "TAG",
@@ -245,10 +287,19 @@ class MainActivity : AppCompatActivity() {
         })
 
         btEdit.setOnClickListener(View.OnClickListener {
+
+            allFlashcards = flashcardDatabase.getAllCards().toMutableList()
+//            val (question, answer,wrong_answer_1,wrong_answer_2,uuid) = allFlashcards[currentCardDisplayedIndex]
+            cardToEdit = allFlashcards[currentCardDisplayedIndex]
+
+            id = cardToEdit?.uuid!!
+
             val intent = Intent(this, AddCardActivity::class.java)
-            intent.putExtra("question", flashcard_question.text)
-            intent.putExtra("answer", flashcard_answer.text)
-            resultLauncher.launch(intent)
+
+            intent.putExtra("question", cardToEdit?.question)
+            intent.putExtra("answer", cardToEdit?.answer)
+
+            editResultLauncher.launch(intent)
         })
     }
 
