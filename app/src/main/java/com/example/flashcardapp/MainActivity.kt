@@ -46,10 +46,10 @@ class MainActivity : AppCompatActivity() {
         allFlashcards = flashcardDatabase.getAllCards().toMutableList()
 
         if (allFlashcards.size > 0) {
-            index = getRandomNumber(0, allFlashcards.size)
+            index = getRandomNumber(0, allFlashcards.size-1)
 
             while (index == currentCardDisplayedIndex) {
-                index = getRandomNumber(0, allFlashcards.size)
+                index = getRandomNumber(0, allFlashcards.size-1)
             }
 
             currentCardDisplayedIndex = index
@@ -73,10 +73,10 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            index = getRandomNumber(0, allFlashcards.size)
+            index = getRandomNumber(0, allFlashcards.size-1)
 
             while (index == currentCardDisplayedIndex) {
-                index = getRandomNumber(0, allFlashcards.size)
+                index = getRandomNumber(0, allFlashcards.size-1)
             }
 
             // advance our pointer index so we can show the next card
