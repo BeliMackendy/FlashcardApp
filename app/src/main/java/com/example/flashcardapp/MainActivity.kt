@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewAnimationUtils
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.RelativeLayout
@@ -46,10 +47,10 @@ class MainActivity : AppCompatActivity() {
         allFlashcards = flashcardDatabase.getAllCards().toMutableList()
 
         if (allFlashcards.size > 0) {
-            index = getRandomNumber(0, allFlashcards.size-1)
+            index = getRandomNumber(0, allFlashcards.size - 1)
 
             while (index == currentCardDisplayedIndex) {
-                index = getRandomNumber(0, allFlashcards.size-1)
+                index = getRandomNumber(0, allFlashcards.size - 1)
             }
 
             currentCardDisplayedIndex = index
@@ -73,10 +74,10 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            index = getRandomNumber(0, allFlashcards.size-1)
+            index = getRandomNumber(0, allFlashcards.size - 1)
 
             while (index == currentCardDisplayedIndex) {
-                index = getRandomNumber(0, allFlashcards.size-1)
+                index = getRandomNumber(0, allFlashcards.size - 1)
             }
 
             // advance our pointer index so we can show the next card
@@ -95,7 +96,7 @@ class MainActivity : AppCompatActivity() {
 
             // set the question and answer TextViews with data from the database
             allFlashcards = flashcardDatabase.getAllCards().toMutableList()
-            val (question, answer,wrong_answer_1,wrong_answer_2) = allFlashcards[currentCardDisplayedIndex]
+            val (question, answer, wrong_answer_1, wrong_answer_2) = allFlashcards[currentCardDisplayedIndex]
 
             flashcard_answer.text = answer
             flashcard_question.text = question
@@ -135,7 +136,7 @@ class MainActivity : AppCompatActivity() {
                 if (currentCardDisplayedIndex == -1)
                     currentCardDisplayedIndex = 0
 
-                val (question, answer,wrong_answer_1,wrong_answer_2) = allFlashcards[currentCardDisplayedIndex]
+                val (question, answer, wrong_answer_1, wrong_answer_2) = allFlashcards[currentCardDisplayedIndex]
                 flashcard_answer.text = answer
                 flashcard_question.text = question
                 txt_A.text = wrong_answer_1
@@ -147,16 +148,44 @@ class MainActivity : AppCompatActivity() {
                 flashcard_answer.visibility = View.INVISIBLE
                 rl_choice.visibility = View.VISIBLE
 
-                txt_A.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
-                txt_B.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
-                txt_C.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
+                txt_A.setBackground(
+                    getResources().getDrawable(
+                        R.drawable.card_background_choice,
+                        null
+                    )
+                )
+                txt_B.setBackground(
+                    getResources().getDrawable(
+                        R.drawable.card_background_choice,
+                        null
+                    )
+                )
+                txt_C.setBackground(
+                    getResources().getDrawable(
+                        R.drawable.card_background_choice,
+                        null
+                    )
+                )
             }
 
         }
 
         flashcard_question.setOnClickListener(View.OnClickListener {
+            // get the center for the clipping circle
+            val cx = flashcard_answer.width / 2
+            val cy = flashcard_answer.height / 2
+
+            // get the final radius for the clipping circle
+            val finalRadius = Math.hypot(cx.toDouble(), cy.toDouble()).toFloat()
+
+            // create the animator for this view (the start radius is zero)
+            val anim =
+                ViewAnimationUtils.createCircularReveal(flashcard_answer, cx, cy, 0f, finalRadius)
             flashcard_question.visibility = View.INVISIBLE
             flashcard_answer.visibility = View.VISIBLE
+
+            anim.duration = 500
+            anim.start()
         })
 
         flashcard_answer.setOnClickListener(View.OnClickListener {
@@ -329,9 +358,24 @@ class MainActivity : AppCompatActivity() {
                             rl_question_answer.visibility = View.VISIBLE
                             rl_choice.visibility = View.VISIBLE
 
-                            txt_A.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
-                            txt_B.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
-                            txt_C.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
+                            txt_A.setBackground(
+                                getResources().getDrawable(
+                                    R.drawable.card_background_choice,
+                                    null
+                                )
+                            )
+                            txt_B.setBackground(
+                                getResources().getDrawable(
+                                    R.drawable.card_background_choice,
+                                    null
+                                )
+                            )
+                            txt_C.setBackground(
+                                getResources().getDrawable(
+                                    R.drawable.card_background_choice,
+                                    null
+                                )
+                            )
                         }
 
                         Snackbar.make(
@@ -373,9 +417,24 @@ class MainActivity : AppCompatActivity() {
                         txt_B.text = answer
                         txt_C.text = option2
 
-                        txt_A.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
-                        txt_B.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
-                        txt_C.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
+                        txt_A.setBackground(
+                            getResources().getDrawable(
+                                R.drawable.card_background_choice,
+                                null
+                            )
+                        )
+                        txt_B.setBackground(
+                            getResources().getDrawable(
+                                R.drawable.card_background_choice,
+                                null
+                            )
+                        )
+                        txt_C.setBackground(
+                            getResources().getDrawable(
+                                R.drawable.card_background_choice,
+                                null
+                            )
+                        )
 
                         Snackbar.make(
                             findViewById(R.id.flashcard_question),
