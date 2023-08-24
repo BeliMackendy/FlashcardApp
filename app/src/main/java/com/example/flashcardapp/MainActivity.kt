@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewAnimationUtils
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.RelativeLayout
@@ -94,6 +96,25 @@ class MainActivity : AppCompatActivity() {
                 currentCardDisplayedIndex = 0
             }
 
+
+            val leftOutAnim = AnimationUtils.loadAnimation(this, R.anim.left_out)
+            val rightInAnim = AnimationUtils.loadAnimation(this, R.anim.right_in)
+
+            leftOutAnim.setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationStart(animation: Animation?) {
+                    // this method is called when the animation first starts
+                }
+
+                override fun onAnimationEnd(animation: Animation?) {
+                    // this method is called when the animation is finished playing
+                }
+
+                override fun onAnimationRepeat(animation: Animation?) {
+                    // we don't need to worry about this method
+                }
+            })
+
+
             // set the question and answer TextViews with data from the database
             allFlashcards = flashcardDatabase.getAllCards().toMutableList()
             val (question, answer, wrong_answer_1, wrong_answer_2) = allFlashcards[currentCardDisplayedIndex]
@@ -107,6 +128,12 @@ class MainActivity : AppCompatActivity() {
 
             flashcard_question.visibility = View.VISIBLE
             flashcard_answer.visibility = View.INVISIBLE
+
+
+            flashcard_question.startAnimation(leftOutAnim)
+            flashcard_question.startAnimation(rightInAnim)
+
+
 
             txt_A.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
             txt_B.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
