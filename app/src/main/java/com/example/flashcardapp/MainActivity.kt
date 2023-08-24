@@ -17,17 +17,24 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.snackbar.Snackbar
+import nl.dionsegijn.konfetti.core.Party
+import nl.dionsegijn.konfetti.core.Position
+import nl.dionsegijn.konfetti.core.emitter.Emitter
+import nl.dionsegijn.konfetti.xml.KonfettiView
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var flashcardDatabase: FlashcardDatabase
+    lateinit var txt_A: TextView
+    lateinit var txt_B: TextView
+    lateinit var txt_C: TextView
     var currentCardDisplayedIndex = 0
     var index = 0
     var id = 0
     var cardToEdit: Flashcard? = null
     var allFlashcards = mutableListOf<Flashcard>()
     var countDownTimer: CountDownTimer? = null
-
 
 
     @SuppressLint("MissingInflatedId")
@@ -42,9 +49,9 @@ class MainActivity : AppCompatActivity() {
 
         val rl_choice = findViewById<RelativeLayout>(R.id.rl_choice)
 
-        val txt_A = findViewById<TextView>(R.id.txt_A)
-        val txt_B = findViewById<TextView>(R.id.txt_B)
-        val txt_C = findViewById<TextView>(R.id.txt_C)
+        txt_A = findViewById<TextView>(R.id.txt_A)
+        txt_B = findViewById<TextView>(R.id.txt_B)
+        txt_C = findViewById<TextView>(R.id.txt_C)
 
         val btAdd = findViewById<ImageView>(R.id.bt_add)
         val btEdit = findViewById<ImageView>(R.id.bt_edit)
@@ -54,6 +61,7 @@ class MainActivity : AppCompatActivity() {
             override fun onTick(millisUntilFinished: Long) {
                 findViewById<TextView>(R.id.timer).text = "" + millisUntilFinished / 1000
             }
+
             override fun onFinish() {}
         }
 
@@ -147,11 +155,7 @@ class MainActivity : AppCompatActivity() {
             flashcard_question.startAnimation(leftOutAnim)
             flashcard_question.startAnimation(rightInAnim)
 
-
-
-            txt_A.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
-            txt_B.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
-            txt_C.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
+            reset_choice()
         }
 
         findViewById<View>(R.id.btn_delete).setOnClickListener {
@@ -234,6 +238,16 @@ class MainActivity : AppCompatActivity() {
             flashcard_answer.visibility = View.INVISIBLE
         })
 
+        val party = Party(
+            speed = 0f,
+            maxSpeed = 30f,
+            damping = 0.9f,
+            spread = 360,
+            colors = listOf(0xfce18a, 0xff726d, 0xf4306d, 0xb48def),
+            position = Position.Relative(0.5, 0.3),
+            emitter = Emitter(duration = 100, TimeUnit.MILLISECONDS).max(100)
+        )
+
         txt_A.setOnClickListener(View.OnClickListener {
             if (txt_A.text == flashcard_answer.text) {
                 txt_A.setBackground(
@@ -296,6 +310,7 @@ class MainActivity : AppCompatActivity() {
                         null
                     )
                 )
+                findViewById<KonfettiView>(R.id.KonfettiView).start(party)
             } else {
                 txt_A.setBackground(
                     getResources().getDrawable(
@@ -361,9 +376,8 @@ class MainActivity : AppCompatActivity() {
         })
 
         rl_choice.setOnClickListener(View.OnClickListener {
-            txt_A.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
-            txt_B.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
-            txt_C.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
+            reset_choice()
+
         })
 
         val resultLauncher =
@@ -517,6 +531,12 @@ class MainActivity : AppCompatActivity() {
 
             editResultLauncher.launch(intent)
         })
+    }
+
+    private fun reset_choice() {
+        txt_A.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
+        txt_B.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
+        txt_C.setBackground(getResources().getDrawable(R.drawable.card_background_choice, null))
     }
 
     private fun startTimer() {
