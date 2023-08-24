@@ -397,6 +397,7 @@ class MainActivity : AppCompatActivity() {
         btAdd.setOnClickListener(View.OnClickListener {
             val intent = Intent(this, AddCardActivity::class.java)
             resultLauncher.launch(intent)
+            overridePendingTransition(R.anim.right_in, R.anim.left_out);
         })
 
         btEdit.setOnClickListener(View.OnClickListener {
