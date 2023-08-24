@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
 import android.view.ViewAnimationUtils
@@ -25,6 +26,9 @@ class MainActivity : AppCompatActivity() {
     var id = 0
     var cardToEdit: Flashcard? = null
     var allFlashcards = mutableListOf<Flashcard>()
+    var countDownTimer: CountDownTimer? = null
+
+
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,10 +49,19 @@ class MainActivity : AppCompatActivity() {
         val btAdd = findViewById<ImageView>(R.id.bt_add)
         val btEdit = findViewById<ImageView>(R.id.bt_edit)
 
+
+        countDownTimer = object : CountDownTimer(16000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                findViewById<TextView>(R.id.timer).text = "" + millisUntilFinished / 1000
+            }
+            override fun onFinish() {}
+        }
+
         flashcardDatabase = FlashcardDatabase(this)
         allFlashcards = flashcardDatabase.getAllCards().toMutableList()
 
         if (allFlashcards.size > 0) {
+            startTimer()
             index = getRandomNumber(0, allFlashcards.size - 1)
 
             while (index == currentCardDisplayedIndex) {
@@ -70,12 +83,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<View>(R.id.btn_next).setOnClickListener {
+
             // don't try to go to next card if you have no cards to begin with
             if (allFlashcards.size == 0) {
                 // return here, so that the rest of the code in this onClickListener doesn't execute
                 return@setOnClickListener
             }
-
+            startTimer()
             index = getRandomNumber(0, allFlashcards.size - 1)
 
             while (index == currentCardDisplayedIndex) {
@@ -503,6 +517,11 @@ class MainActivity : AppCompatActivity() {
 
             editResultLauncher.launch(intent)
         })
+    }
+
+    private fun startTimer() {
+        countDownTimer?.cancel()
+        countDownTimer?.start()
     }
 
     fun getRandomNumber(minNumber: Int, maxNumber: Int): Int {
