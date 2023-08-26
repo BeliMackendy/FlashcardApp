@@ -15,7 +15,7 @@ Flashcard app is a App can display a question, and on tap display the answer to 
 ## Optional
 - [x] Extra styling is added!
 - [x] User sees a countdown timer for each question
-- [ ] User sees a 'card flip' animation when the card is tapped
+- [x] User sees a 'card flip' animation when the card is tapped
 - [x] User sees a celebration animation with confetti when they answer a question correctly
 ## Lab 3
 

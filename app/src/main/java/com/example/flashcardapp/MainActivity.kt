@@ -1,5 +1,7 @@
 package com.example.flashcardapp
 
+import android.animation.AnimatorInflater
+import android.animation.AnimatorSet
 import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -36,11 +38,21 @@ class MainActivity : AppCompatActivity() {
     var allFlashcards = mutableListOf<Flashcard>()
     var countDownTimer: CountDownTimer? = null
 
+    lateinit var front_anim: AnimatorSet
+    lateinit var back_anim: AnimatorSet
+    var isFront = true
+
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // Now Create Animator Object
+        // For this we add animator folder inside res
+        // Now we will add the animator to our card
+        // we now need to modify the camera scale
+        var scale = applicationContext.resources.displayMetrics.density
 
         val flashcard_question = findViewById<TextView>(R.id.flashcard_question)
         val flashcard_answer = findViewById<TextView>(R.id.flashcard_answer)
@@ -56,6 +68,14 @@ class MainActivity : AppCompatActivity() {
         val btAdd = findViewById<ImageView>(R.id.bt_add)
         val btEdit = findViewById<ImageView>(R.id.bt_edit)
 
+        flashcard_question.cameraDistance = 8000 * scale
+        flashcard_answer.cameraDistance = 8000 * scale
+
+        // Now we will set the front animation
+        front_anim =
+            AnimatorInflater.loadAnimator(applicationContext, R.anim.front_animator) as AnimatorSet
+        back_anim =
+            AnimatorInflater.loadAnimator(applicationContext, R.anim.back_animator) as AnimatorSet
 
         countDownTimer = object : CountDownTimer(16000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
@@ -151,9 +171,10 @@ class MainActivity : AppCompatActivity() {
             flashcard_question.visibility = View.VISIBLE
             flashcard_answer.visibility = View.INVISIBLE
 
-
             flashcard_question.startAnimation(leftOutAnim)
             flashcard_question.startAnimation(rightInAnim)
+
+
 
             reset_choice()
         }
@@ -216,26 +237,56 @@ class MainActivity : AppCompatActivity() {
         }
 
         flashcard_question.setOnClickListener(View.OnClickListener {
-            // get the center for the clipping circle
-            val cx = flashcard_answer.width / 2
-            val cy = flashcard_answer.height / 2
+//            // get the center for the clipping circle
+//            val cx = flashcard_answer.width / 2
+//            val cy = flashcard_answer.height / 2
+//
+//            // get the final radius for the clipping circle
+//            val finalRadius = Math.hypot(cx.toDouble(), cy.toDouble()).toFloat()
+//
+//            // create the animator for this view (the start radius is zero)
+//            val anim =
+//                ViewAnimationUtils.createCircularReveal(flashcard_answer, cx, cy, 0f, finalRadius)
+//            flashcard_question.visibility = View.INVISIBLE
+//            flashcard_answer.visibility = View.VISIBLE
+//
+//            anim.duration = 500
+//            anim.start()
+            if (isFront) {
+                front_anim.setTarget(flashcard_question);
+                back_anim.setTarget(flashcard_answer);
+                front_anim.start()
+                back_anim.start()
+                isFront = false
 
-            // get the final radius for the clipping circle
-            val finalRadius = Math.hypot(cx.toDouble(), cy.toDouble()).toFloat()
+            } else {
+                front_anim.setTarget(flashcard_answer)
+                back_anim.setTarget(flashcard_question)
+                back_anim.start()
+                front_anim.start()
+                isFront = true
 
-            // create the animator for this view (the start radius is zero)
-            val anim =
-                ViewAnimationUtils.createCircularReveal(flashcard_answer, cx, cy, 0f, finalRadius)
-            flashcard_question.visibility = View.INVISIBLE
-            flashcard_answer.visibility = View.VISIBLE
-
-            anim.duration = 500
-            anim.start()
+            }
         })
 
         flashcard_answer.setOnClickListener(View.OnClickListener {
-            flashcard_question.visibility = View.VISIBLE
-            flashcard_answer.visibility = View.INVISIBLE
+//            flashcard_question.visibility = View.VISIBLE
+//            flashcard_answer.visibility = View.INVISIBLE
+            if (isFront) {
+                front_anim.setTarget(flashcard_question);
+                back_anim.setTarget(flashcard_answer);
+                front_anim.start()
+                back_anim.start()
+                isFront = false
+
+            } else {
+                front_anim.setTarget(flashcard_answer)
+                back_anim.setTarget(flashcard_question)
+                back_anim.start()
+                front_anim.start()
+                isFront = true
+
+            }
         })
 
         val party = Party(
